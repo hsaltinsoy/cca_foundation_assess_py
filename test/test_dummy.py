@@ -39,6 +39,15 @@ class DummyTest(unittest.TestCase):
         self.warehouse.adjust_stock(self.product1, 30)
         self.assertEqual(self.warehouse.check_stock(self.product1), 20)
 
+    def test_receive_stock_for_existing_prod(self):
+        self.warehouse.receive_stock(self.product1, 10)
+        self.assertEqual(self.warehouse.check_stock(self.product1), 30)
+
+    def test_receive_stock_for_non_existing_prod(self):
+        non_existing_product = Product(id=3, description="NonExistingProduct", price=5.99)
+        self.warehouse.receive_stock(non_existing_product, 30)
+        self.assertEqual(self.warehouse.check_stock(non_existing_product), 30)
+
 
 if __name__ == '__main__':
     unittest.main()
