@@ -19,3 +19,12 @@ class Warehouse:
                 return prod.stock
         return 0
 
+    def adjust_stock(self, product: Product, quantity: int) -> None:
+        for prod in self.catalogue:
+            if prod.product == product:
+                if prod.stock >= quantity:
+                    prod.stock = prod.stock - quantity
+                else:
+                    return "There is not enough stock for this product!"
+        return None
+

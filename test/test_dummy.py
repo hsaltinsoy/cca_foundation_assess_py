@@ -27,6 +27,18 @@ class DummyTest(unittest.TestCase):
         empty_warehouse = Warehouse([])
         self.assertEqual(empty_warehouse.check_stock(self.product1), 0)
 
+    def test_adjust_stock_when_stock_bigger(self):
+        self.warehouse.adjust_stock(self.product1, 10)
+        self.assertEqual(self.warehouse.check_stock(self.product1), 10)
+
+    def test_adjust_stock_when_stock_and_qua_equal(self):
+        self.warehouse.adjust_stock(self.product1, 20)
+        self.assertEqual(self.warehouse.check_stock(self.product1), 0)
+
+    def test_adjust_stock_when_stock_lower(self):
+        self.warehouse.adjust_stock(self.product1, 30)
+        self.assertEqual(self.warehouse.check_stock(self.product1), 20)
+
 
 if __name__ == '__main__':
     unittest.main()
