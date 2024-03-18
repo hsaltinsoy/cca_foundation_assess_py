@@ -1,6 +1,8 @@
 import unittest
 from src.product import Product
 from src.warehouse import Entry, Warehouse
+from src.address import Address
+from src.order import Order, Item
 
 
 class DummyTest(unittest.TestCase):
@@ -10,6 +12,8 @@ class DummyTest(unittest.TestCase):
     def setUp(self):
         self.product1 = Product(id=1, description="Product1", price=10.99)
         self.product2 = Product(id=2, description="Product2", price=20.99)
+        self.address = Address(house="10", street="Baker", city="London", postcode="NW3 5AS", country="Albania")
+        self.order = Order(shipping_address=self.address, items=[])
         self.warehouse = Warehouse([
             Entry(self.product1, 20),
             Entry(self.product2, 30)
@@ -47,6 +51,21 @@ class DummyTest(unittest.TestCase):
         non_existing_product = Product(id=3, description="NonExistingProduct", price=5.99)
         self.warehouse.receive_stock(non_existing_product, 30)
         self.assertEqual(self.warehouse.check_stock(non_existing_product), 30)
+
+    def test_add_item_to_order_when_quantity_enough(self):
+        item = Item(product=self.product1, quantity=10)
+        self.order.add_item(item=item, wh=self.warehouse)
+        self.assertEqual(self.warehouse.check_stock(self.product1), 10)
+
+    def test_add_item_to_order_when_quantity_bigger(self):
+        item = Item(product=self.product1, quantity=30)
+        self.order.add_item(item=item, wh=self.warehouse)
+        self.assertEqual(self.warehouse.check_stock(self.product1), 20)
+
+    def test_add_item_to_order_when_quantity_equal(self):
+        item = Item(product=self.product1, quantity=20)
+        self.order.add_item(item=item, wh=self.warehouse)
+        self.assertEqual(self.warehouse.check_stock(self.product1), 0)
 
 
 if __name__ == '__main__':

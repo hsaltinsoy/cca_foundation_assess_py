@@ -34,4 +34,3 @@ class Warehouse:
                 entry.stock += quantity
         else:
             self.catalogue.append(Entry(product, quantity))
-
